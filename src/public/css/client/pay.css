@@ -1,0 +1,117 @@
+@import url('https://fonts.googleapis.com/css?family=Montserrat');
+
+* {
+    margin: 0;
+    padding: 0;
+}
+
+::placeholder {
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 10px;
+    font-weight: 100;
+}
+
+body {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 100;
+    font-size: 12px;
+    background: #b7bbff;
+}
+
+
+h2 {
+    border-bottom: 2px solid dimgray;
+    padding-bottom: 2%;
+    text-align: center;
+    text-transform: uppercase;
+    margin-bottom: 2%;
+}
+
+.box {
+    margin: 2% auto;
+}
+
+#container {
+    box-shadow: 0 3px 7px 0 rgba(0, 0, 0, 0.2), 0 5px 19px 0 rgba(0, 0, 0, 0.19);
+    width: 400px;
+    margin: 0 auto;
+    background: #b7bbff;
+    padding: 2% 3%;
+}
+
+div.box label {
+    width: 100%;
+    display: block;
+    padding: 10px 0;
+}
+
+div.box label span {
+    display: block;
+    color: #333;
+    float: left;
+    width: 100px;
+    text-align: right;
+    padding: 5px 20px 0 0;
+}
+
+.box input {
+    color: white;
+    background: #777de6;
+    border-style: none;
+    border-radius: 20px;
+    padding: 5px 3%;
+    text-transform: uppercase;
+    font-weight: 200;
+    transition: .5s;
+}
+
+#month {
+    color: white;
+    background: #777de6;
+    border-style: none;
+    border-radius: 20px;
+    padding: 5px 3%;
+    text-transform: uppercase;
+    font-weight: bold;
+    transition: .5s;
+}
+
+#year {
+    color: white;
+    margin-left: -0.3%;
+    background: #777de6;
+    border-style: none;
+    border-radius: 20px;
+    padding: 5px 3%;
+    text-transform: uppercase;
+    font-weight: bold;
+    transition: .5s;
+}
+
+.box .button {
+    font-weight: 100;
+    width: 250px;
+    height: 40px;
+    background: #777de6;
+    color: ghostwhite;
+    border-style: none;
+    padding: 5px 5px;
+    border-radius: 20px;
+    position: relative;
+    left: 22%;
+}
+
+.box .button:hover {
+    background: #4247cc;
+    color: ghostwhite;
+}
+
+.box .button:active {
+    background: ghostwhite;
+    color: #3FBF41;
+}
+
+.box input:hover, .box #month:hover, .box #year:hover {
+    background: #4247cc;
+    color: white;
+}

@@ -1,0 +1,82 @@
+.nav-link {
+    cursor: pointer;
+}
+
+label.error {
+    padding: 5px 0;
+    min-width: 100%;
+    color: red;
+    display: block;
+}
+
+/*#header {*/
+/*    width: 100%;*/
+/*    position: fixed;*/
+/*    top: 0;*/
+/*}*/
+
+@page {
+    size: A4;
+    margin: 0;
+}
+
+@media print {
+    html, body {
+        width: 210mm;
+        height: 297mm;
+    }
+
+    /* ... the rest of the rules ... */
+}
+
+body {
+    background: #EEE;
+    /* font-size:0.9em !important; */
+
+}
+
+.bigfont {
+    font-size: 3rem !important;
+}
+
+.invoice {
+    width: 970px !important;
+    margin: 50px auto;
+}
+
+.logo {
+    float: left;
+    padding-right: 10px;
+    margin: 10px auto;
+}
+
+dt {
+    float: left;
+}
+
+dd {
+    float: left;
+    clear: right;
+}
+
+.customercard {
+    min-width: 65%;
+}
+
+.itemscard {
+    min-width: 98.5%;
+    margin-left: 0.5%;
+}
+
+.logo {
+    max-width: 5rem;
+    margin-top: -0.25rem;
+}
+
+.invDetails {
+    margin-top: 0rem;
+}
+
+.pageTitle {
+    margin-bottom: -1rem;
+}

@@ -1,0 +1,28 @@
+{
+  "name": "jwt_tutorials",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "start": "nodemon ./src/server.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "app-root-path": "3.0.0",
+    "bcrypt": "^5.1.0",
+    "config": "^1.31.0",
+    "dotenv": "^16.0.3",
+    "ejs": "^3.1.8",
+    "express": "^4.18.2",
+    "express-validator": "^6.15.0",
+    "jsonwebtoken": "^9.0.0",
+    "moment": "^2.29.4",
+    "multer": "1.4.3",
+    "mysql2": "^3.2.0",
+    "node-sass": "^8.0.0",
+    "node-sass-middleware": "^1.0.1",
+    "nodemon": "^2.0.21",
+    "qs": "^6.11.2"
+  }
+}

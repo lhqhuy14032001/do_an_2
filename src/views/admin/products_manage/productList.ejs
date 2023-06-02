@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản lý sản phẩm</title>
+</head>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+      integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+<style>
+    label.error {
+        padding: 5px 0;
+        min-width: 100%;
+        color: red;
+        display: block;
+    }
+
+    .img-product {
+        width: 100px;
+        height: 100px;
+    }
+
+    td {
+        vertical-align: middle;
+    }
+
+    .img-product {
+        height: 100px;
+        width: 100px;
+    }
+
+    .block-ellipsis {
+        display: block;
+        display: -webkit-box;
+        max-width: 75%;
+        height: 43px;
+        /*margin: 0 auto;*/
+        font-size: 14px;
+        line-height: 1;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+</style>
+
+<body>
+<section id="header">
+    <%- include('../header.ejs') %>
+</section>
+<div class="container my-3 col-12">
+    <a href="/admin/add_product" class="btn-add-product-modal btn btn-outline-success btn-lg float-right">Thêm sản
+        phẩm</a>
+    <section class="product-list mt-3">
+        <h1>Danh sách sản phẩm</h1>
+        <div class="notification alert alert-danger" role="alert"></div>
+        <div class="notification_success alert alert-success" role="alert"></div>
+        <div class="row my-2">
+            <div class="col-11">
+                <select id="category-filter" class=" form-select" aria-label="Default select example">
+                    <option selected value="ALL">Tất cả</option>
+                    <% if (categoryList.length != []){ %>
+                        <% categoryList.forEach(category =>{ %>
+                            <option value="<%= category.id %>"><%= category.category_name %>
+                            </option>
+                        <% }) %>
+                    <% }else { %>
+                    <% } %>
+                </select></div>
+            <div class="col-1">
+                <button class="btn-filter btn btn btn-success w-100">Lọc</button>
+            </div>
+        </div>
+        <table class="product-list table table-striped">
+            <thead>
+            <tr>
+                <th>Tên sản phẩm</th>
+                <th>Ảnh sản phẩm</th>
+                <th>Số lượng</th>
+                <th>Chức năng</th>
+            </tr>
+            </thead>
+            <tbody>
+            <% if (products.length != []){ %>
+                <% products.forEach(product => { %>
+                    <tr>
+                        <td>
+                            <p class="block-ellipsis"><%= product.product_name %></p>
+                        </td>
+                        <td>
+                            <% for (let i = 0;i < product.product_img.split(",").length; i++){ %>
+                                <img class="img-product" src="<%= product.product_img.split(",")[0] %>">
+                            <% break; } %>
+                        </td>
+                        <!--                        <td class="w-25">-->
+                        <!--                            <p class="block-ellipsis"><%# product.product_description %></p>-->
+                        <!--                        </td>-->
+                        <td>
+                            <p><%= product.quantity %></p>
+                        </td>
+                        <td>
+                            <a href="/admin/get-edit-product?id=<%= product.id_product %>"
+                               class="btn btn-warning">Sửa</a>
+                            <button onclick="handleDeleteProduct(<%= product.id_product %>)"
+                                    class="btn-delete-product btn btn-danger">Xoá
+                            </button>
+                        </td>
+                    </tr>
+                <% }) %>
+            <% }else{ %>
+                <p class="h4 text-danger"> Hiện tại không có sản phẩm trong danh mục</p>
+            <% } %>
+            </tbody>
+        </table>
+        <div class="row">
+            <div class="col-4 offset-4">
+                <button class="<%= isShowViewmore ? 'd-none ' : 'd-block ' %> viewMore-product btn btn-success w-100">
+                    Xem thêm
+                </button>
+            </div>
+        </div>
+    </section>
+
+</div>
+<%- include('../footer.ejs') -%>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"
+        integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"
+        integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF"
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
+<!--CKEDITOR-->
+<!--<script src="https://cdn.ckeditor.com/4.21.0/standard/ckeditor.js"></script>-->
+<!--<script src=js/admin/product_manage.js"></script>-->
+<script src="/js/admin/product_manage.js"></script>
+<script>
+    let handleDeleteProduct = (IDProduct) => {
+        $.ajax({
+            url: '/admin/delete-product',
+            data: {id: IDProduct},
+            success: (data) => {
+                if (data.err == 0) {
+                    alert(data.msg);
+                    location.reload();
+                } else {
+                    alert(data.msg);
+                }
+            }
+        })
+    }
+</script>
+
+</body>
+</html>

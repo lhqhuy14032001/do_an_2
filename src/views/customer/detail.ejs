@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html>
+<%- include('components/headTag.ejs'); -%>
+<style>
+    .left-list {
+        max-height: 338px;
+        overflow: scroll;
+    }
+
+    .description-content {
+        max-height: 500px;
+        overflow: hidden;
+    }
+</style>
+<body>
+<div class="page-holder bg-light">
+    <!-- navbar-->
+    <%- include('components/header.ejs'); -%>
+    <section class="py-5">
+        <div class="container">
+            <div class="row mb-5">
+                <div class="col-lg-6">
+                    <!-- PRODUCT SLIDER-->
+                    <div class="row m-sm-0">
+                        <div class="col-sm-2 p-sm-0 order-2 order-sm-1 mt-2 mt-sm-0 px-xl-2">
+                            <div class="left-list swiper product-slider-thumbs">
+                                <div class="swiper-wrapper">
+                                    <% product.product_img.split(",").forEach((img) => { %>
+                                        <div class="swiper-slide h-auto swiper-thumb-item mb-3">
+                                            <img class="w-100" src="<%= img %>" alt="...">
+                                        </div>
+                                    <% }) %>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-10 order-1 order-sm-2">
+                            <div class="swiper product-slider">
+                                <div class="swiper-wrapper">
+                                    <% product.product_img.split(",").forEach((img) => { %>
+                                        <div class="swiper-slide h-auto"><a
+                                                    class="glightbox product-view"
+                                                    data-gallery="gallery2"
+                                                    data-glightbox="Product item 1"
+                                                    href="<%= img %>">
+                                                <img class="img-fluid h-100" src="<%= img %>"
+                                                     alt="..."></a>
+                                        </div>
+                                    <% }) %>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- PRODUCT DETAILS-->
+                <div class="col-lg-6">
+                    <h1><%= product.product_name %>
+                    </h1>
+                    <p class="text-danger lead">Giá bán:
+                        <span class="price-product">  <%= new Intl.NumberFormat().format(product.price) %></span>
+                        &#8363;</p>
+                    <p class="text-muted lead">Số lượng sản
+                        phẩm: <%= product.quantity > 0 ? product.quantity : 'Hết hàng' %></p>
+                    <div class="row align-items-stretch mb-4">
+                        <div <%= product.quantity > 0 ? '' : 'hidden' %> id="add-cart"
+                                                                         class="btn-add-cart col-sm-3 pl-sm-0">
+                            <span id="id_product" class="d-none"><%= product.id_product %></span>
+                            <a
+                                    class=" btn btn-dark btn-sm btn-block h-100 d-flex align-items-center justify-content-center px-0"
+
+                            >Thêm vào giỏ</a></div>
+                    </div>
+                    <ul class="list-unstyled small d-inline-block">
+                        <li class="px-3 py-2 mb-1 bg-white text-muted"><strong
+                                    class="text-uppercase text-dark">Danh
+                                mục:</strong><a
+                                    class="reset-anchor ms-2"
+                                    href="/all-product?cateID=<%= product.category_id %>"> <%= categoryName %></a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <!-- DETAILS TABS-->
+            <ul class="nav nav-tabs border-0" id="myTab" role="tablist">
+                <li class="nav-item"><a class="nav-link text-uppercase active" id="description-tab"
+                                        data-bs-toggle="tab"
+                                        href="#description" role="tab" aria-controls="description"
+                                        aria-selected="true">Mô
+                        tả sản phẩm</a>
+                </li>
+            </ul>
+
+            <div class="tab-content mb-5" id="myTabContent">
+                <div class="tab-pane fade show active" id="description" role="tabpanel"
+                     aria-labelledby="description-tab">
+                    <div id="description-content" class="description-content p-4 p-lg-5 bg-white">
+                        <h6 class="text-uppercase">Mô tả sản phẩm </h6>
+                        <%- product.product_description -%>
+                    </div>
+                    <button class="btn-read-more col-12 text-primary border-primary btn text-center mb-3 mt-1">Đọc tiếp
+                        >
+                    </button>
+                    <button class="btn-shortcut d-none btn-read-more col-12 text-primary border-primary btn text-center mb-3 mt-1">
+                        Rút gọn
+                    </button>
+                </div>
+                <!-- RELATED PRODUCTS-->
+                <h2 class="h5 text-uppercase mb-4">Sản phẩm liên quan</h2>
+                <div class="row">
+                    <!-- PRODUCT-->
+                    <% if (relatedProduct.length == 0) { %>
+                        <p>Không có sản phẩm liên quan</p>
+                    <% }else { %>
+                        <% relatedProduct.forEach((product) => { %>
+                            <div class="col-lg-3 col-sm-6">
+                                <div class="product text-center skel-loader">
+                                    <div class="d-block mb-3 position-relative">
+                                        <a class="d-block"
+                                           href="/detail-product?id=<%= product.id_product %>">
+                                            <img
+                                                    class="img-fluid w-100"
+                                                    src="<%= product.product_img.split(',')[0] %>"
+                                                    alt="...">
+                                        </a>
+                                        <div class="product-overlay">
+                                            <ul class="mb-0 list-inline">
+
+                                                <li id="add-cart" class=" btn-add-cart list-inline-item m-0 p-0">
+                                                    <span id="id_product"
+                                                          class="d-none"><%= product.id_product %></span>
+                                                    <a
+                                                            class=" btn btn-sm btn-dark"
+                                                            <%= product.quantity > 0 ? '' : 'hidden' %>
+                                                    >Thêm vào giỏ
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <h6>
+                                        <a class="reset-anchor" href="/detail-product?id=<%= product.id_product %>">Kui
+                                            <%= product.product_name %></a>
+                                    </h6>
+                                    <p class="small text-muted">
+                                        Giá bán:
+                                        <span class="btn-add-cart price-product-related">
+                                            <%# this.handlePrice(product.price) %>
+                                            <%= new Intl.NumberFormat().format(product.price) %>
+                                        </span>
+                                        &#8363;
+                                    </p>
+                                </div>
+                            </div>
+                        <% }) %>
+                    <% } %>
+                </div>
+            </div>
+
+        </div>
+    </section>
+    <!--    Footer-->
+    <%- include('components/footer.ejs') -%>
+    <!-- JavaScript files-->
+    <%- include('components/scriptTag.ejs') -%>
+    <script>
+        let btnReadmore = document.querySelector('.btn-read-more');
+        let btnShortcut = document.querySelector('.btn-shortcut');
+        btnReadmore.addEventListener('click', () => {
+            document.querySelector('#description-content').classList.remove('description-content')
+            btnReadmore.classList.add('d-none');
+            btnShortcut.classList.remove('d-none')
+        })
+        btnShortcut.addEventListener('click', () => {
+            document.querySelector('#description-content').classList.add('description-content')
+            btnShortcut.classList.add('d-none');
+            btnReadmore.classList.remove('d-none')
+        })
+    </script>
+</div>
+</body>
+</html>

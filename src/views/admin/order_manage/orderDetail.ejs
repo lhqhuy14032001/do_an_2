@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chi tiết đơn hàng</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="/css/admin/style.css">
+</head>
+<body>
+<div class="container invoice">
+    <a href="/admin/order" class="btn btn-success float-right">Đóng</a>
+    <div class="invoice-header">
+        <div class="ui left aligned grid px-3">
+            <div class="row">
+                <div class="left floated left aligned six wide column">
+                    <div class="ui">
+                        <h1 class="ui header pageTitle mb-3">Đơn hàng
+                        </h1>
+                        <h4 class="ui sub header invDetails">Mã đơn: <%= orderInfo.id_bill %> | Ngày tạo: <span
+                                    class="date-order-detail"><%= orderInfo.dateOrder %>
+                            </span>
+                        </h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="ui segment cards">
+        <div class="ui card p-3 mb-3">
+            <div class="content">
+                <div class="header">Thông tin cửa hàng</div>
+            </div>
+            <div class="content">
+                <ul>
+                    <li><strong> Tên cửa hàng: Táo Trắng </strong></li>
+                    <li><strong> Địa chỉ: </strong> 200 Hàm Nghi, Bình Khánh, Long Xuyên, An Giang</li>
+                    <li><strong> Số điện thoại: </strong> 0914779607</li>
+                    <li><strong> Email: </strong> Lhqhuy1900325@student.ctuet.edu.vn</li>
+                    <li><strong> Liên hệ: </strong> Lê Hoàng Quốc Huy</li>
+                </ul>
+            </div>
+        </div>
+        <div class="ui card customercard p-3 mb-3">
+            <div class="content">
+                <div class="header">Thông tin khách hàng</div>
+            </div>
+            <div class="content ">
+                <ul>
+                    <li><strong> Tên: </strong><%= orderInfo.customer_name %> </li>
+                    <li><strong> Địa chỉ: </strong> <%= orderInfo.address %> </li>
+                    <li><strong> Số điện thoại: </strong> <%= orderInfo.customer_phonenumber %></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="ui segment itemscard  mb-3">
+            <div class="content">
+                <table class="ui celled table">
+                    <thead full-width>
+                    <tr>
+                        <th>Sản phẩm</th>
+                        <th class="text-center colfix">Số lượng</th>
+                        <th class="text-center colfix">Giá</th>
+                        <th class="text-center colfix">Tổng tiền</th>
+                    </tr>
+                    </thead>
+                    <tbody full-width>
+                    <% products.forEach((product) => { %>
+                        <tr>
+                            <td>
+                                <%= product.name %>
+                            </td>
+                            <td class="text-center">
+                                <%= product.quantity %>
+                            </td>
+                            <td class="text-center">
+                                <%= new Intl.NumberFormat().format(product.price) %>&#8363;
+                            </td>
+                            <td class="text-center">
+                                <%= new Intl.NumberFormat().format(product.total) %>&#8363;
+                            </td>
+                        </tr>
+                    <% }) %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="ui card p-3 mb-3">
+            <div class="content center aligned text segment">
+                <small class="ui sub header">Tổng tiền </small>
+                <p class="bigfont"> <%= new Intl.NumberFormat().format(orderInfo.total) %>&#8363; </p>
+            </div>
+        </div>
+        <div class="ui card p-3 mb-3">
+            <div class="content">
+                <div class="header">Trạng thái thanh toán</div>
+            </div>
+            <div class="content">
+                <p><strong> <%= orderInfo.payment_status ? 'ĐÃ THANH TOÁN' : 'CHƯA THANH TOÁN' %></strong></p>
+
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+<script src="/js/admin/orderManage.js"></script>
+</body>
+
+</html>

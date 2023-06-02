@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html>
+<%- include('components/headTag.ejs'); -%>
+<!-- JavaScript files-->
+<%- include('components/scriptTag.ejs') -%>
+<style>
+    .active {
+        color: #dcb14a;
+    }
+
+    .category-item {
+        cursor: pointer;
+    }
+</style>
+<body>
+<div class="page-holder">
+    <!-- navbar-->
+    <%- include('components/header.ejs'); -%>
+    <div class="container">
+        <!-- HERO SECTION-->
+        <section class="py-5 bg-light">
+            <div class="container">
+                <div class="row px-4 px-lg-5 py-lg-4 align-items-center">
+                    <div class="col-lg-6">
+                        <h1 class="h2 text-uppercase mb-0">TÁO TRẮNG</h1>
+                    </div>
+                    <div class="col-lg-6 text-lg-end">
+                        <nav aria-label="breadcrumb">
+                            <ol class="breadcrumb justify-content-lg-end mb-0 px-0 bg-light">
+                                <li class="breadcrumb-item"><a class="text-dark" href="/">Trang chủ</a></li>
+                                <li class="breadcrumb-item active" aria-current="page">Sản phẩm</li>
+                            </ol>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="py-5">
+            <div class="container p-0">
+                <div class="row">
+                    <!-- SHOP SIDEBAR-->
+                    <div class="col-lg-3 order-2 order-lg-1">
+                        <div class="py-2 px-4 bg-dark text-white mb-3"><strong
+                                    class="small text-uppercase fw-bold">Danh
+                                mục sản phẩm</strong></div>
+                        <% if (categoryList != []){ %>
+                            <% categoryList.forEach((category) => { %>
+                                <ul class="list-unstyled small text-muted ps-lg-4 font-weight-normal">
+                                    <li class=" mb-2">
+                                        <a id="<%= category.id %>"
+                                           onclick="getProductByCateID(<%= category.id %>)"
+                                           class="category-item <%= cateID == category.id ? 'active' : '' %>">
+                                            <%= category.category_name %>
+                                        </a>
+                                    </li>
+                                </ul>
+                            <% }) %>
+                        <% }else{ %>
+                            <ul class="list-unstyled small text-muted ps-lg-4 font-weight-normal">
+                                <li class="mb-2"><a class="reset-anchor" href="#!">Hiện tại, không có danh mục sản
+                                        phẩm</a>
+                                </li>
+
+                            </ul>
+                        <% } %>
+
+                    </div>
+                    <!-- SHOP LISTING-->
+                    <div class="col-lg-9 order-1 order-lg-2 mb-5 mb-lg-0">
+                        <div class="product-list row">
+                            <% if (productList != []){ %>
+                                <h2><%= categoryName ?? 'Không có sản phẩm' %></h2>
+                                <% productList.forEach((product) => { %>
+                                    <div class="col-lg-4 col-sm-6">
+                                        <div class="product text-center">
+                                            <div class="mb-3 position-relative">
+                                                <div class="badge text-white bg-"></div>
+                                                <a class="d-block"
+                                                   href="/detail-product?id=<%= product.id_product %>"><img
+                                                            class="img-fluid w-100"
+                                                            src="<%= product.product_img.split(',')[0] %>"
+                                                            alt="..."></a>
+                                                <div class="product-overlay">
+                                                    <ul id="add-cart" class="mb-0 list-inline">
+                                                        <span
+                                                                id="<%= product.quantity > 0 ? 'id_product' : ' ' %>"
+                                                                class="d-none">
+                                                                <%= product.id_product %></span>
+                                                        <li class="btn-add-cart list-inline-item m-0 p-0">
+                                                            <a
+                                                                    class=" btn btn-sm btn-dark"
+                                                            ><%= product.quantity > 0 ? 'Thêm vảo giỏ' : 'Hết hàng' %></a>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                            <h6><a class="reset-anchor"
+                                                   href="/detail-product"><%= product.product_name %></a>
+                                            </h6>
+                                            <p class="small text-muted">Giá
+                                                bán: <%= new Intl.NumberFormat().format(product.price) %> &#8363; </p>
+                                        </div>
+                                    </div>
+                                <% }) %>
+                            <% }else{ %>
+                                <div class="col-lg-4 col-sm-6">
+                                    <h2>Hiện tại, không có sản phẩm</h2>
+                                </div>
+                        </div>
+                        <% } %>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</div>
+<!--    Footer-->
+<%- include('components/footer.ejs') -%>
+<script>
+    let productList = $('.product-list');
+    let row = '';
+    let getProductByCateID = (cateID) => {
+        $(`.category-item.active`).removeClass('active');
+        $(`#${cateID}.category-item`).addClass('active')
+        $.ajax({
+            url: `/product-by-category`,
+            data: {cateID: cateID},
+            success: (data) => {
+                if (data.err == 1 && data.data.length == 0) {
+                    row = '';
+                    productList.html('');
+                    row = 'Không có sản phẩm trong danh mục'
+                    productList.html(row);
+                } else {
+                    $.getScript('js/customer/common.js');
+                    row = '';
+                    productList.html('');
+                    data.data.forEach((product) => {
+                        row += ` <div class="col-lg-4 col-sm-6">
+                                        <div class="product text-center">
+                                            <div class="mb-3 position-relative">
+                                                <div class="badge text-white bg-"></div>
+                                                <a class="d-block"
+                                                   href="/detail-product?id=${product.id_product}"><img
+                                                            class="img-fluid w-100"
+                                                            src="${product.product_img.split(',')[0]}"
+                                                            alt="..."></a>
+                                                <div class="product-overlay">
+                                                    <ul class="mb-0 list-inline">
+                                                        <li id="add-cart"
+                                                        class="btn-add-cart list-inline-item m-0 p-0" } >
+                                                            <span id="${product.quantity > 0 ? 'id_product' : ' '}" class="d-none">${product.id_product}</span>
+                        <a
+                        class=" btn btn-sm btn-dark" >${product.quantity > 0 ? 'Thêm vào giỏ' : 'HẾT HÀNG'}</a>
+                        </li>
+                        </ul>
+                        </div>
+                        </div>
+                        <h6><a class="reset-anchor"
+                        href="/detail-product">${product.product_name}</a>
+                        </h6>
+                        <p class="small text-muted">Giá
+                        bán: ${new Intl.NumberFormat().format(product.price)} &#8363; </p>
+                        </div>
+                        </div>`
+
+                    })
+                    productList.html(row);
+                }
+            }
+        })
+    }
+</script>
+</body>
+</html>
